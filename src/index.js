@@ -24,7 +24,10 @@ import {
 
 // reduces are always used named for the state they manage
 // They always recieve the current state  and the action they're processing
-const defaultState = {amount:100};
+const defaultState = {
+    amount1: 100,
+    amount2: 200,
+};
 // create your action types as constants so you get error messages for typos
 const INCREMENT= 'INCREMENT';
 const DECREMENT= 'DECREMENT';
@@ -54,10 +57,10 @@ function counter(state=defaultState, action) {
 
     switch(action.type) {
         case INCREMENT :
-            newState.amount = state.amount + action.amount;
+            newState[action.amountId] = state[action.amountId] + action.amount;
             break;
         case DECREMENT :
-            newState.amount = state.amount - action.amount;
+            newState[action.amountId] = state[action.amountId] - action.amount;
             break;
         default: 
             break;
@@ -75,7 +78,7 @@ function counter(state=defaultState, action) {
     //They *must* return the new version of state
 }
 // you give it a reducer it gives you a 'store'. The store is an object that manages your state using your render
-const store = createStore(counter);
+const store = createStore(counter, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 
 // Push notifications- subscribe to changes in the store
@@ -85,9 +88,27 @@ store.subscribe(() => {
 });
 
 //give it some actions to process
-store.dispatch(actionIncrement(12));
-store.dispatch(actionDecrement(4));
-store.dispatch(actionDecrement());
+// store.dispatch(actionIncrement(12));
+// store.dispatch(actionDecrement(4));
+// store.dispatch(actionDecrement());
+
+store.dispatch({
+    type: INCREMENT,
+    amount: 10,
+    amountId: 'amount2'
+});
+
+store.dispatch({
+    type: INCREMENT,
+    amount: 111,
+    amountId: 'amount2'
+});
+
+store.dispatch({
+    type: INCREMENT,
+    amount: 1,
+    amountId: 'amount2'
+});
 
 
 
